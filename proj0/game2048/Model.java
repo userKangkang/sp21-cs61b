@@ -113,11 +113,68 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        board.setViewingPerspective(side);
+        for(int i = 0; i < this.board.size(); i++){
+            changed |= tripleMergeHelper(i);
+        }
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
         }
+        return changed;
+    }
+
+    private boolean simpleUpHelper(int col){
+        boolean res = false;
+        int maxEmptyRow = 999;
+        for(int i = this.board.size() - 2; i >= 0; i--){
+            if(this.board.tile(col, i) == null){
+                continue;
+            }
+            for(int j = i + 1; j < this.board.size() ; j++){
+                if(this.board.tile(col, j) == null){
+                    maxEmptyRow = j;
+                }
+            }
+            if(maxEmptyRow != 999){
+                board.move(col, maxEmptyRow, this.board.tile(col, i));
+                res = true;
+            }
+            maxEmptyRow = 999;
+        }
+        return res;
+    }
+
+    private int basicMergeHelper(int col, int merged){
+        for(int i = this.board.size() - 1; i > 0; i--){
+            if(this.board.tile(col, i) == null || this.board.tile(col, i - 1) == null){
+                break;
+            } else if(i == merged || i - 1 == merged){
+                continue;
+            }
+            if(this.board.tile(col, i - 1).value() == this.board.tile(col, i).value()){
+                Tile t = this.board.tile(col, i).merge(col, i, this.board.tile(col, i - 1));
+                this.board.move(col, i, this.board.tile(col, i - 1));
+                this.score += t.value();
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean tripleMergeHelper(int col){
+        boolean changed = simpleUpHelper(col);
+        int mergedRow = basicMergeHelper(col, -1);
+        if(!changed) {
+            changed = mergedRow >= 0;
+        }
+        while(mergedRow > -1){
+            changed |= simpleUpHelper(col);
+            mergedRow = basicMergeHelper(col, mergedRow);
+            changed |= mergedRow >= 0;
+        }
+        changed |= simpleUpHelper(col);
         return changed;
     }
 
@@ -138,6 +195,13 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        for(int i = 0; i < b.size(); i++){
+            for(int j = 0; j < b.size(); j++){
+                if(b.tile(i, j) == null){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -148,6 +212,13 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        for(int i = 0; i < b.size(); i++){
+            for(int j = 0; j < b.size(); j++){
+                if(b.tile(i, j) != null && b.tile(i, j).value() == MAX_PIECE){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -159,6 +230,18 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if(emptySpaceExists(b)){
+            return true;
+        }
+        for(int i = 0; i < b.size(); i++){
+            for(int j = 0; j < b.size(); j++){
+                if(j < b.size() - 1 && b.tile(j, i).value() == b.tile(j + 1, i).value()){
+                    return true;
+                } else if(i < b.size() - 1 && b.tile(j, i).value() == b.tile(j, i + 1).value()){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

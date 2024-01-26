@@ -17,7 +17,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
         rear = 0;
         capacity = 10;
     }
-
+    @Override
     public void addFirst(T item){
         if(isFull()){
             resize(capacity * 2);
@@ -26,7 +26,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
         items[head] = item;
         size++;
     }
-
+    @Override
     public void addLast(T item){
         if(isFull()){
             resize(capacity * 2);
@@ -48,18 +48,15 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
         items = tmp;
     }
 
-    public boolean isEmpty(){
-        return rear == head;
-    }
 
     private boolean isFull(){
         return (rear - head + capacity) % capacity == 1;
     }
-
+    @Override
     public int size(){
         return size;
     }
-
+    @Override
     public void printDeque(){
         StringBuilder returnSB = new StringBuilder("");
         int index = head;
@@ -69,7 +66,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
         }
         System.out.println(returnSB.toString());
     }
-
+    @Override
     public T removeFirst(){
         if(isEmpty()){
             return null;
@@ -82,7 +79,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
         size--;
         return returnValue;
     }
-
+    @Override
     public T removeLast(){
         if(isEmpty()){
             return null;
@@ -95,7 +92,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
         size--;
         return returnValue;
     }
-
+    @Override
     public T get(int index){
         if(index >= capacity && index < 0){
             return null;

@@ -36,7 +36,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
         size++;
     }
 
-    public void resize(int newSize){
+    private void resize(int newSize){
         T[] tmp = (T[]) new Object[newSize];
         int i;
         for(i = 0; i < size; i++){
@@ -52,7 +52,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
         return rear == head;
     }
 
-    public boolean isFull(){
+    private boolean isFull(){
         return (rear - head + capacity) % capacity == 1;
     }
 
@@ -103,7 +103,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
         return items[(head - index + capacity) % capacity];
     }
 
-    public class ArrayIterator implements Iterator<T>{
+    private class ArrayIterator implements Iterator<T>{
         int index;
 
         public ArrayIterator(){
@@ -132,7 +132,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
         return (Iterator<T>) iter;
     }
 
-    public boolean contains(T data){
+    private boolean contains(T data){
         for(int index = head; index != rear; index = (index + 1) % capacity){
             if(data == items[index]){
                 return true;

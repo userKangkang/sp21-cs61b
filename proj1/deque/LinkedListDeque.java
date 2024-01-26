@@ -16,8 +16,8 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
         }
     }
 
-    Node sentinel;
-    int size;
+    private Node sentinel;
+    private int size;
 
     public LinkedListDeque() {
         size = 0;
@@ -88,8 +88,11 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
         if(isEmpty()){
             return null;
         }
-        Node p = sentinel;
+        Node p = sentinel.next;
         for(int i = 0; i < index; i++){
+            if(p == sentinel){
+                return null;
+            }
             p = p.next;
         }
         return (T)p.data;
@@ -99,7 +102,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
         return recursiveHelper(index, sentinel.next);
     }
 
-    public T recursiveHelper(int index, Node p){
+    private T recursiveHelper(int index, Node p){
         if(p == sentinel){
             return null;
         }
@@ -109,7 +112,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
         return recursiveHelper(index - 1, p.next);
     }
 
-    public class LinkIterator implements Iterator<T>{
+    private class LinkIterator implements Iterator<T>{
         Node p;
 
         public LinkIterator(Node node){
@@ -138,7 +141,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
         return (Iterator<T>) iter;
     }
 
-    public boolean contains(T item){
+    private boolean contains(T item){
         Node p = sentinel;
         do{
             if(p.data == item){

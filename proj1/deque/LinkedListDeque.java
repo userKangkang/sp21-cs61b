@@ -3,7 +3,7 @@ package deque;
 
 import java.util.Iterator;
 
-public class LinkedListDeque<T> implements Iterable<T>{
+public class LinkedListDeque<T> implements Deque<T>{
     private static class Node<T>{
         private T data;
         private Node next;
@@ -123,6 +123,9 @@ public class LinkedListDeque<T> implements Iterable<T>{
 
         @Override
         public T next(){
+            if(!hasNext()){
+                return null;
+            }
             T data = (T)p.data;
             p = p.next;
             return data;

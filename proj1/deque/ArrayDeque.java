@@ -2,13 +2,13 @@ package deque;
 
 import java.util.Iterator;
 
-public class ArrayDeque<T> implements Iterable<T>{
+public class ArrayDeque<T> implements Deque<T>{
     // legal syntax of creating modeled array.
-    private T[] items;
-    private int size;
-    private int head;
-    private int rear;
-    private int capacity;
+    protected T[] items;
+    protected int size;
+    protected int head;
+    protected int rear;
+    protected int capacity;
 
     public ArrayDeque(){
         items = (T[]) (new Object[10]);
@@ -117,8 +117,11 @@ public class ArrayDeque<T> implements Iterable<T>{
 
         @Override
         public T next(){
+            if(!hasNext()){
+                return null;
+            }
             T data = get(index);
-            index = (index + 1) % capacity;
+            index = (index - 1 + capacity) % capacity;
             return data;
         }
     }

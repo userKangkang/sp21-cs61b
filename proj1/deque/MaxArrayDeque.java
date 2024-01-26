@@ -26,7 +26,7 @@ public class MaxArrayDeque<T> extends ArrayDeque<T>{
             return null;
         }
         T maxValue = items[head];
-        for(T item : items){
+        for(T item : this){
             if(c.compare(item, maxValue) > 0){
                 maxValue = item;
             }

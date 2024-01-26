@@ -120,7 +120,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
             if(!hasNext()){
                 return null;
             }
-            T data = get(index - head);
+            T data = get(head - index);
             index = (index - 1 + capacity) % capacity;
             return data;
         }
@@ -149,16 +149,23 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
         if(o == null){
             return false;
         }
-        if(o.getClass() != this.getClass()){
+        if(o.getClass() != this.getClass() && !o.getClass().equals(LinkedListDeque.class)){
             return false;
         }
-        ArrayDeque<T> other = (ArrayDeque<T>) o;
-        if(other.size() != this.size()){
+        Deque<T> other = (Deque<T>) o;
+        if(other.size() != size){
             return false;
         }
         for(T item : this){
-            if(!other.contains(item)){
-                return false;
+            if(other.getClass().equals(LinkedListDeque.class)){
+                if(!((LinkedListDeque<T>)(other)).contains(item)){
+                    return false;
+                }
+            }
+            if(other.getClass().equals(ArrayDeque.class)){
+                if(!((ArrayDeque<T>)(other)).contains(item)){
+                    return false;
+                }
             }
         }
         return true;

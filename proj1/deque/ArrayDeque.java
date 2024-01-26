@@ -134,7 +134,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
 
     public boolean contains(T data){
         for(int index = head; index != rear; index = (index - 1 + capacity) % capacity){
-            if(data == items[index]){
+            if(data.equals(items[index])){
                 return true;
             }
         }

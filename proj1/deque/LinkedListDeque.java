@@ -144,7 +144,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
     public boolean contains(T item){
         Node p = sentinel;
         do{
-            if(p.data == item){
+            if(p.data != null && p.data.equals(item)){
                 return true;
             }
             p = p.next;

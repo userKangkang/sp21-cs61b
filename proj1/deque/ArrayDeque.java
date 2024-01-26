@@ -120,7 +120,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
             if(!hasNext()){
                 return null;
             }
-            T data = get(index);
+            T data = get(index - head);
             index = (index - 1 + capacity) % capacity;
             return data;
         }
